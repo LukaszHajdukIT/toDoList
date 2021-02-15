@@ -11,6 +11,7 @@ let $editedTodo; // edited ToDo
 let $popupInput; // tekst added to input in popup
 let $addPopupBtn; // button "accept" in popup
 let $closeTodoBtn; // button to exit popup
+let $allTask;
 let $idNumber = 0;
 
 const main = () => {
@@ -29,6 +30,7 @@ const prepareDOMElements = () => {
     $popupInput = document.querySelector('.popupInput');
     $addPopupBtn = document.querySelector('.accept');
     $closeTodoBtn = document.querySelector('.cancel');
+    $allTask = $ulList.getElementsByTagName('li');
 };
 
 // broadcasting listener
@@ -36,7 +38,9 @@ const prepareDOMEvents = () => {
     $addBtn.addEventListener('click', addNewTask);
     $ulList.addEventListener('click', checkClick);
     $closeTodoBtn.addEventListener('click', closePopup);
+    $toDoInput.addEventListener('keyup', enterCheck)
     $addPopupBtn.addEventListener('click', changeTodo);
+
 };
 
 const addNewTask = () => {
@@ -53,7 +57,13 @@ const addNewTask = () => {
     } else {
         $alertInfo.innerText = 'Wpisz treść zadanie!';
     }
-}
+};
+
+const enterCheck = (event) => {
+    if(event.keyCode === 13){
+        addNewTask();
+    }
+};
 
 const cerateToolsArea = () => {
     toolsPanel = document.createElement('div');
@@ -74,7 +84,7 @@ const cerateToolsArea = () => {
     deleteBtn.classList.add('delete');
     deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
     toolsPanel.appendChild(deleteBtn);
-}
+};
 
 // manage clicks and buttons
 const checkClick = (event) => {
@@ -84,7 +94,7 @@ const checkClick = (event) => {
     } else if (event.target.closest('button').className === 'edit') {
         editTask(event);
     } else if (event.target.closest('button').className === 'delete') {
-        console.log('delete');
+        deleteTask(event);
     }
 };
 
@@ -111,6 +121,19 @@ const changeTodo = () => {
 const closePopup = () => {
     $popup.style.display = 'none';
     $popupInfo.innerText = '';
-}
+};
+
+const deleteTask = (event) => {
+    const deleteTodo = event.target.closest('li');
+    deleteTodo.remove();
+
+    if($allTask.length === 0){
+        $alertInfo.innerText = 'Brak zadań na liście.';
+    }
+};
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', main);
