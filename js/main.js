@@ -11,6 +11,7 @@ let $editedTodo; // edited ToDo
 let $popupInput; // tekst added to input in popup
 let $addPopupBtn; // button "accept" in popup
 let $closeTodoBtn; // button to exit popup
+let $allTask;
 
 const main = () => {
     prepareDOMElements();
@@ -28,6 +29,7 @@ const prepareDOMElements = () => {
     $popupInput = document.querySelector('.popupInput');
     $addPopupBtn = document.querySelector('.accept');
     $closeTodoBtn = document.querySelector('.cancel');
+    $allTask = $ulList.getElementsByTagName('li');
 };
 
 // broadcasting listener
@@ -35,6 +37,7 @@ const prepareDOMEvents = () => {
     $addBtn.addEventListener('click', addNewTask);
     $ulList.addEventListener('click', checkClick);
     $closeTodoBtn.addEventListener('click', closePopup);
+    $toDoInput.addEventListener('keyup', enterCheck)
 };
 
 const addNewTask = () => {
@@ -48,6 +51,12 @@ const addNewTask = () => {
         cerateToolsArea();
     } else {
         $alertInfo.innerText = 'Wpisz treść zadanie!';
+    }
+};
+
+const enterCheck = (event) => {
+    if(event.keyCode === 13){
+        addNewTask();
     }
 };
 
@@ -94,6 +103,10 @@ const closePopup = () => {
 const deleteTask = (event) => {
     const deleteTodo = event.target.closest('li');
     deleteTodo.remove();
+
+    if($allTask.length === 0){
+        $alertInfo.innerText = 'Brak zadań na liście.';
+    }
 };
 
 document.addEventListener('DOMContentLoaded', main);
