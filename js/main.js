@@ -49,7 +49,7 @@ const addNewTask = () => {
     } else {
         $alertInfo.innerText = 'Wpisz treść zadanie!';
     }
-}
+};
 
 const cerateToolsArea = () => {
     toolsPanel = document.createElement('div');
@@ -70,7 +70,7 @@ const cerateToolsArea = () => {
     deleteBtn.classList.add('delete');
     deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
     toolsPanel.appendChild(deleteBtn);
-}
+};
 
 const checkClick = (event) => {
     if (event.target.closest('button').classList.contains('complete')) {
@@ -79,7 +79,7 @@ const checkClick = (event) => {
     } else if (event.target.closest('button').className === 'edit') {
         editTask();
     } else if (event.target.closest('button').className === 'delete') {
-        console.log('delete');
+        deleteTask(event);
     }
 };
 
@@ -89,6 +89,11 @@ const editTask = () => {
 
 const closePopup = () => {
     $popup.style.display = 'none';
-}
+};
+
+const deleteTask = (event) => {
+    const deleteTodo = event.target.closest('li');
+    deleteTodo.remove();
+};
 
 document.addEventListener('DOMContentLoaded', main);
