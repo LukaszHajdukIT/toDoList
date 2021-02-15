@@ -12,6 +12,7 @@ let $popupInput; // tekst added to input in popup
 let $addPopupBtn; // button "accept" in popup
 let $closeTodoBtn; // button to exit popup
 let $allTask;
+let $idNumber = 0;
 
 const main = () => {
     prepareDOMElements();
@@ -38,12 +39,16 @@ const prepareDOMEvents = () => {
     $ulList.addEventListener('click', checkClick);
     $closeTodoBtn.addEventListener('click', closePopup);
     $toDoInput.addEventListener('keyup', enterCheck)
+    $addPopupBtn.addEventListener('click', changeTodo);
+
 };
 
 const addNewTask = () => {
     if ($toDoInput.value !== '') {
+        $idNumber++;
         $newTask = document.createElement('li');
         $newTask.innerText = $toDoInput.value;
+        $newTask.setAttribute('id', `todo-${$idNumber}`)
         $ulList.appendChild($newTask);
 
         $toDoInput.value = '';
@@ -81,23 +86,41 @@ const cerateToolsArea = () => {
     toolsPanel.appendChild(deleteBtn);
 };
 
+// manage clicks and buttons
 const checkClick = (event) => {
     if (event.target.closest('button').classList.contains('complete')) {
         event.target.closest('li').classList.toggle('completed');
         event.target.closest('button').classList.toggle('completed');
     } else if (event.target.closest('button').className === 'edit') {
-        editTask();
+        editTask(event);
     } else if (event.target.closest('button').className === 'delete') {
         deleteTask(event);
     }
 };
 
-const editTask = () => {
+// editing tasks
+const editTask = (event) => {
+    const oldTodo = event.target.closest('li').id;
+    $editedTodo = document.getElementById(oldTodo);
+    $popupInput.value = $editedTodo.firstChild.textContent;
+
     $popup.style.display = 'flex';
 };
 
+const changeTodo = () => {
+    if ($popupInput.value !== '') {
+        $editedTodo.firstChild.textContent = $popupInput.value;
+        $popup.style.display = 'none';
+        $popupInfo.innerText = '';
+    } else {
+        $popupInfo.innerText = 'Musisz podać jakąś treść!';
+    }
+};
+
+// closing popup
 const closePopup = () => {
     $popup.style.display = 'none';
+    $popupInfo.innerText = '';
 };
 
 const deleteTask = (event) => {
@@ -108,5 +131,9 @@ const deleteTask = (event) => {
         $alertInfo.innerText = 'Brak zadań na liście.';
     }
 };
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', main);
