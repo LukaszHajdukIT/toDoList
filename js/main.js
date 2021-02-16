@@ -59,8 +59,8 @@ const addNewTask = () => {
     }
 };
 
-const enterCheck = (event) => {
-    if(event.keyCode === 13){
+const enterCheck = () => {
+    if(event.code === 'Enter'){
         addNewTask();
     }
 };
@@ -131,9 +131,5 @@ const deleteTask = (event) => {
         $alertInfo.innerText = 'Brak zadań na liście.';
     }
 };
-
-
-
-
 
 document.addEventListener('DOMContentLoaded', main);
